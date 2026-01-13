@@ -1,6 +1,6 @@
 # ref-AI-ree
 
-Small Project to help Referee analysing sequences, possible fouls or making decisions confirmation
+Small Project to help referees analyze sequences, possible fouls, and make decision confirmations
 
 ## Project Overview
 

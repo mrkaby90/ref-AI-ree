@@ -3,6 +3,7 @@ Video processing utilities for referee AI system
 """
 
 import cv2
+import numpy as np
 from pathlib import Path
 from typing import Optional, Tuple
 
@@ -43,19 +44,22 @@ def get_video_info(video_path: str) -> dict:
     if cap is None:
         return {}
     
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    
     info = {
         'width': int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
         'height': int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)),
-        'fps': cap.get(cv2.CAP_PROP_FPS),
-        'frame_count': int(cap.get(cv2.CAP_PROP_FRAME_COUNT)),
-        'duration': cap.get(cv2.CAP_PROP_FRAME_COUNT) / cap.get(cv2.CAP_PROP_FPS)
+        'fps': fps,
+        'frame_count': frame_count,
+        'duration': frame_count / fps if fps > 0 else 0
     }
     
     cap.release()
     return info
 
 
-def extract_frame(video_path: str, frame_number: int) -> Optional[Tuple]:
+def extract_frame(video_path: str, frame_number: int) -> Optional[Tuple[bool, np.ndarray]]:
     """
     Extract a specific frame from a video
     
